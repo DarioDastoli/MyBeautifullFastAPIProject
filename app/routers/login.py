@@ -5,7 +5,7 @@ from typing import Optional
 from sqlalchemy.orm import Session
 from jwt.exceptions import InvalidTokenError
 from app.db import get_db
-from app.schemas import Token, TokenData
+from app.schemas import Token, TokenData, User as UserSchema
 from app.models import User
 from pwdlib import PasswordHash
 from typing import Annotated
@@ -55,7 +55,7 @@ def get_password_hash(password):
     return password_hash.hash(password)
 
 
-@router.get("/user/{username}")
+@router.get("/user/{username}", response_model=UserSchema)
 def get_user(username:str, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.username == username).first()
     return user
@@ -111,7 +111,7 @@ async def get_current_active_user(
     return current_user
     
 
-@router.post("/token")
+@router.post("/token", response_model=Token)
 async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     db: Session = Depends(get_db)
@@ -130,14 +130,14 @@ async def login_for_access_token(
     return Token(access_token=access_token, token_type="bearer")
 
 
-@router.get("/users/me/")
+@router.get("/users/me/", response_model=UserSchema)
 async def read_users_me(
     current_user: Annotated[User, Depends(get_current_active_user)],
 ):
     return current_user
 
 
-@router.post("/user/")
+@router.post("/user/", response_model=UserSchema)
 def create_user(
     username: str,
     password: str,
@@ -156,10 +156,9 @@ def create_user(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Username already registered"
         )
-    hashed_password = get_password_hash(password)
     new_user = User(
         username=username,
-        password=hashed_password,
+        password=get_password_hash(password),
         is_superuser=is_superuser,
         first_name=first_name,
         last_name=last_name,
@@ -174,7 +173,7 @@ def create_user(
     return new_user
 
 
-@router.get("/users/")
+@router.get("/users/", response_model=list[UserSchema])
 async def read_users(
     current_user: User = Depends(require_role(["superuser"])),
     db: Session = Depends(get_db)

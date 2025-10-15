@@ -10,7 +10,6 @@ class User(BaseModel):
     is_active: bool
     is_superuser: bool
     is_staff: bool
-    password: str 
     last_login: datetime | None = None
     date_joined: datetime | None = None
 
