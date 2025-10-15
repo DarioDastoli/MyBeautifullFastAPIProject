@@ -1,6 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routers import drivers, login, constructors, races, results
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 app = FastAPI(
     title="ErgastDB API Wrapper",
