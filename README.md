@@ -2,6 +2,7 @@
 
 ## Overview
 F1Bot is a FastAPI application designed for user authentication and management. It provides a set of APIs for user login, token generation, and role management, allowing for secure access to resources based on user roles.
+During the development of this project, my main objective was to explore and implement FastAPI’s functionalities. For simplicity, some files include more content than necessary and could be refactored to manage, for instance, configurations in a more structured manner.
 
 ## Project Structure
 ```
@@ -47,9 +48,3 @@ F1Bot
   - User registration and management
   - User login and token generation
   - Role-based access control
-
-## Contributing
-Contributions are welcome! Please submit a pull request or open an issue for any enhancements or bug fixes.
-
-## License
-This project is licensed under the MIT License. See the LICENSE file for more details.
