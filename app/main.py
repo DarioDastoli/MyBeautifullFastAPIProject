@@ -1,15 +1,16 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routers import drivers, login, constructors, races, results
+import os
 from dotenv import load_dotenv
 
 load_dotenv()
 
 
 app = FastAPI(
-    title="ErgastDB API Wrapper",
-    description="Un'API FastAPI che espone i dati di ErgastDB (F1).",
-    version="1.0.0"
+    title=os.getenv("PROJECT_NAME", "F1-FASTAPI"),
+    description="An API to expose ErgastDB (F1) data.",
+    version=os.getenv("VERSION","1.0.0")
 )
 
 app.add_middleware(
