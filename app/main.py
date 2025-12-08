@@ -2,23 +2,21 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routers import drivers, login, constructors, races, results
 import os
-from dotenv import load_dotenv
-
-load_dotenv()
+from app.config import settings
 
 
 app = FastAPI(
-    title=os.getenv("PROJECT_NAME", "F1-FASTAPI"),
-    description="An API to expose ErgastDB (F1) data.",
-    version=os.getenv("VERSION","1.0.0")
+    title=settings.PROJECT_NAME,
+    description=settings.DESCRIPTION,
+    version=settings.VERSION
 )
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=settings.BACKEND_CORS_ORIGINS,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=settings.ALLOWED_METHODS,
+    allow_headers=settings.ALLOWED_HEADERS,
 )
 
 app.include_router(login.router)

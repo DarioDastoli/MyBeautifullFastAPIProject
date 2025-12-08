@@ -12,14 +12,12 @@ from typing import Annotated
 import hashlib 
 import os
 import jwt
-from dotenv import load_dotenv
-
-load_dotenv()
+from app.config import settings
 
 
-SECRET_KEY = os.getenv("JWT_SECRET_KEY", "Fake-secret-key")
-ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
-ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("JWT_ACCESS_TOKEN_EXPIRE_MINUTES", "30"))
+SECRET_KEY = settings.JWT_SECRET_KEY
+ALGORITHM = settings.JWT_ALGORITHM
+ACCESS_TOKEN_EXPIRE_MINUTES = settings.JWT_ACCESS_TOKEN_EXPIRE_MINUTES
 
 
 password_hash = PasswordHash.recommended()
